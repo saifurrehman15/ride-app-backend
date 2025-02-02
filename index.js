@@ -12,7 +12,6 @@ const PORT = process.env.PORT;
 // ---- Others ---- //
 app.use(cors());
 app.use(express.json());
-// ----- //
 
 // ---- Mongodb-Connection ---- //
 (async function connectDb() {
@@ -25,26 +24,29 @@ app.use(express.json());
     console.log(error);
   }
 })();
-// ----- //
+
 
 // ---- Public-Routes ---- //
 app.get("/", (req, res) => {
   res.send("Severs is running on " + PORT);
 });
-// ----- //
+
 
 // ---- Private-Routes ---- //
 
-// ----- //
+
+
+
 
 // ---- Auth-Routes ---- //
 app.use("/auth/login", loginAuth);
 app.use("/auth/signup", signUpAuth);
-// ----- //
+
+
+
 
 // ---- User-Routes ---- //
 
-// ----- //
 
 // ---- Server-Listening / Server Running ---- //
 app.listen(PORT, () => console.log("Sever is running on " + PORT));

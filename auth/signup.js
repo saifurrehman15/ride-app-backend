@@ -48,15 +48,15 @@ router.post("/", async (req, res) => {
 
     let token = jwt.sign({ ...newUser }, process.env.AUTH_KEY);
 
-    res.status(201).json({
+    return res.status(201).json({
       error: false,
       message: "The User registered successfully",
-      user: { token, newUser },
+      data: { token, user: newUser },
     });
   } catch (error) {
-    res.status(504).json({
+    return res.status(504).json({
       error: true,
-      message: "Intenal server error",
+      message: "Internal server error",
     });
   }
 });
