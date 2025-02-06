@@ -3,10 +3,9 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import cors from "cors";
 // ---- Importing-Routes //
-import userRoute from "./routes/auth/auth.js";
-import userGet from "./routes/users/user-route.js";
+import authRoute from "./routes/auth/auth.js";
+import userRoute from "./routes/users/user-route.js";
 
-// ----- //
 const app = express();
 const PORT = process.env.PORT;
 
@@ -31,10 +30,8 @@ app.get("/", (req, res) => {
 })();
 
 // ---- Api-Routes ---- //
+app.use("/api", authRoute);
 app.use("/api", userRoute);
-app.use("/api", userGet);
-
-
 
 // ---- Server-Listening / Server Running ---- //
 app.listen(PORT, () => console.log("Sever is running on " + PORT));
