@@ -1,9 +1,8 @@
-import express from "express";
-const router = express();
 import Joi from "joi";
-import { userModel } from "../models/auth/auth-model.js";
+import { userModel } from "../../models/auth/auth-model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import sendResponse from "../../helper/response-helper.js";
 
 const validateSchema = Joi.object({
   userName: Joi.string().trim().min(3).required(),
@@ -13,7 +12,7 @@ const validateSchema = Joi.object({
   pin: Joi.string().max(6).required(),
 });
 
-router.post("/", async (req, res) => {
+const signUp = async (req, res) => {
   try {
     const { error, value } = validateSchema.validate(req.body);
     if (error) {
@@ -48,17 +47,19 @@ router.post("/", async (req, res) => {
 
     let token = jwt.sign({ ...newUser }, process.env.AUTH_KEY);
 
-    return res.status(201).json({
-      error: false,
-      message: "The User registered successfully",
-      data: { token, user: newUser },
-    });
+    sendResponse(
+      res,
+      201,
+      "The User registered successfully",
+      {
+        token,
+        user: newUser,
+      },
+      false
+    );
   } catch (error) {
-    return res.status(504).json({
-      error: true,
-      message: "Internal server error",
-    });
+    sendResponse(res, 500, "Internal server error", true);
   }
-});
+};
 
-export default router;
+export default signUp;

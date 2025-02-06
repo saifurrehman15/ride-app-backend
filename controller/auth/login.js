@@ -1,10 +1,8 @@
-import express from "express";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { userModel } from "../models/auth/auth-model.js";
-
-const router = express();
+import { userModel } from "../../models/auth/auth-model.js";
+import sendResponse from "../../helper/response-helper.js";
 
 const validateSchema = Joi.object({
   phone: Joi.string()
@@ -13,7 +11,7 @@ const validateSchema = Joi.object({
   pin: Joi.string().max(6).required(),
 });
 
-router.post("/", async (req, res) => {
+const login = async (req, res) => {
   try {
     const { error, value } = validateSchema.validate(req.body);
     console.log(error, value);
@@ -43,18 +41,16 @@ router.post("/", async (req, res) => {
     }
 
     const token = jwt.sign({ ...isUserExist }, process.env.AUTH_KEY);
-
-    return res.status(201).json({
-      error: false,
-      message: "User login successfully",
-      data: { token, user: isUserExist },
-    });
+    sendResponse(
+      res,
+      201,
+      "User login successfully",
+      { token, user: isUserExist },
+      false
+    );
   } catch (error) {
-    return res.status(504).json({
-      error: true,
-      message: error || "Internal server error",
-    });
+    sendResponse(res, 500, error || "Internal server error", true);
   }
-});
+};
 
-export default router;
+export default login;

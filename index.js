@@ -3,8 +3,9 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import cors from "cors";
 // ---- Importing-Routes //
-import loginAuth from "./auth/login.js";
-import signUpAuth from "./auth/signup.js";
+import userRoute from "./routes/auth/auth.js";
+import userGet from "./routes/users/user-route.js";
+
 // ----- //
 const app = express();
 const PORT = process.env.PORT;
@@ -12,6 +13,10 @@ const PORT = process.env.PORT;
 // ---- Others ---- //
 app.use(cors());
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("Severs is running on " + PORT);
+});
 
 // ---- Mongodb-Connection ---- //
 (async function connectDb() {
@@ -25,29 +30,11 @@ app.use(express.json());
   }
 })();
 
+// ---- Api-Routes ---- //
+app.use("/api", userRoute);
+app.use("/api", userGet);
 
-// ---- Public-Routes ---- //
-app.get("/", (req, res) => {
-  res.send("Severs is running on " + PORT);
-});
-
-
-// ---- Private-Routes ---- //
-
-
-
-
-
-// ---- Auth-Routes ---- //
-app.use("/auth/login", loginAuth);
-app.use("/auth/signup", signUpAuth);
-
-
-
-
-// ---- User-Routes ---- //
 
 
 // ---- Server-Listening / Server Running ---- //
 app.listen(PORT, () => console.log("Sever is running on " + PORT));
-
