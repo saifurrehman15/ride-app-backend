@@ -44,4 +44,29 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export { allUsers, singleUser, deleteUser };
+// update user
+const updateUser = async (req, res) => {
+  try {
+    const { _id } = req.user._doc;
+    const obj = req.body;
+
+    const updateUser = await userModel.findOneAndUpdate(
+      { _id: _id },
+      {
+        userName: obj.userName,
+        bio: obj.bio,
+        address: obj.address,
+      }
+    );
+
+    if (!updateUser) {
+      sendResponse(res, 403, "Failed to update user!", [], true);
+    }
+
+    sendResponse(res, 200, "User updated successfully!", updateUser, false);
+  } catch (error) {
+    sendResponse(res, 500, error || "Internal server error!", [], true);
+  }
+};
+
+export { allUsers, singleUser, deleteUser, updateUser };
