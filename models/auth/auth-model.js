@@ -10,6 +10,10 @@ const UserSchema = new Schema(
     address: String,
     bio: String,
     cnic: { type: String, unique: true },
+    role: { type: String, default: "user" },
+    reviews: [],
+    rideHistory: [],
+    availability: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

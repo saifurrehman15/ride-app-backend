@@ -5,6 +5,7 @@ import cors from "cors";
 // ---- Importing-Routes //
 import authRoute from "./routes/auth/auth.js";
 import userRoute from "./routes/users/user-route.js";
+import singleImageRoute from "./routes/image-upload/image-upload-route.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 // ---- Api-Routes ---- //
 app.use("/api", authRoute);
 app.use("/api", userRoute);
+app.use("/api", singleImageRoute);
 
 // ---- Server-Listening / Server Running ---- //
 app.listen(PORT, () => console.log("Sever is running on " + PORT));
