@@ -16,19 +16,19 @@ const signUp = async (req, res) => {
   try {
     const { error, value } = validateSchema.validate(req.body);
     if (error) {
-      return res.status(403).json({
-        error: true,
-        message: error.message,
-      });
+      sendResponse(res, 403, error.message, [], true);
     }
     const isUserExist = await userModel.findOne({ phone: value.phone });
     console.log(isUserExist, value);
 
     if (isUserExist) {
-      return res.status(404).json({
-        error: true,
-        message: "The user with this phone number is already exist",
-      });
+      sendResponse(
+        res,
+        404,
+        "The user with this phone number is already exist",
+        [],
+        true
+      );
     }
 
     let hashPin = await bcrypt.hash(value.pin, 10);
@@ -58,7 +58,7 @@ const signUp = async (req, res) => {
       false
     );
   } catch (error) {
-    sendResponse(res, 500, "Internal server error", true);
+    sendResponse(res, 500, "Internal server error", [], true);
   }
 };
 

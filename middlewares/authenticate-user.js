@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 const authenticateUser = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
-    console.log(authorization);
 
     const bearerToken = authorization.split(" ")[1];
     if (!bearerToken) {
@@ -15,7 +14,6 @@ const authenticateUser = async (req, res, next) => {
     if (!decoded) {
       sendResponse(res, 403, "Unauthorized token", [], true);
     }
-    console.log("decoded=>", decoded);
 
     req.user = decoded;
     

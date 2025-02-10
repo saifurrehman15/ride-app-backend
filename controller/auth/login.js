@@ -16,12 +16,8 @@ const login = async (req, res) => {
     const { error, value } = validateSchema.validate(req.body);
     console.log(error, value);
 
-    if (error) {
-      return res.status(403).json({
-        error: true,
-        message: error.message,
-      });
-    }
+    if (error) sendResponse(res, 403, error.message, [], true);
+
     const isUserExist = await userModel.findOne({ phone: value.phone });
 
     if (!isUserExist) {
@@ -33,12 +29,8 @@ const login = async (req, res) => {
 
     let isPinCorrect = await bcrypt.compare(value.pin, isUserExist.pin);
 
-    if (!isPinCorrect) {
-      return res.status(403).json({
-        error: true,
-        message: "The pin is not correct",
-      });
-    }
+    if (!isPinCorrect)
+      sendResponse(res, 403, "The pin is not correct", [], true);
 
     const token = jwt.sign({ ...isUserExist }, process.env.AUTH_KEY);
     sendResponse(
@@ -49,7 +41,7 @@ const login = async (req, res) => {
       false
     );
   } catch (error) {
-    sendResponse(res, 500, error || "Internal server error", true);
+    sendResponse(res, 500, error || "Internal server error", [], true);
   }
 };
 
