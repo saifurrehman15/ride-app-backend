@@ -9,8 +9,7 @@ import {
 
 import authenticateUser from "../../middlewares/authenticate-user.js";
 
-const router = express();
-console.log("runs");
+const router = express.Router();
 
 // single user
 router.get("/singleUserGet", authenticateUser, singleUser);

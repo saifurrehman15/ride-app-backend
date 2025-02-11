@@ -12,7 +12,7 @@ const RideRequestSchema = new Schema(
     assignedRider: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "riders",
-      default: "empty",
+      default: null,
     },
     pickUp: { type: String, required: true, trim: true },
     dropOff: { type: String, required: true, trim: true },
@@ -20,7 +20,7 @@ const RideRequestSchema = new Schema(
     action: {
       type: String,
       default: "pending",
-      enum: ["pending", "accepted", "rejected"],
+      enum: ["pending", "cancelled", "accept"],
     },
   },
   { timestamps: true }
