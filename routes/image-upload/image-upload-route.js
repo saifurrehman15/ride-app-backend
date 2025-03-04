@@ -6,7 +6,6 @@ import {
 import upload from "../../helper/mult-cloud-config.js";
 
 const router = express.Router();
-console.log(upload);
 
 // single image upload
 router.put("/single-image/:id", upload.single("image"), uploadImage);
